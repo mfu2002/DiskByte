@@ -1,0 +1,96 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiskByte.View"
+        xmlns:FolderSelector="clr-namespace:DiskByte.ViewModel.FolderSelector"
+        x:Name="window"
+        x:Class="DiskByte.View.FolderSelectorWindow"
+        Background="{StaticResource WindowBackgroundBrush}"
+        Foreground="{StaticResource ResourceKey=ForegroundBrush}"
+        mc:Ignorable="d"
+        Title="FolderSelectorWindow"
+        WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Height="450"
+        Width="400"
+        WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <FolderSelector:FolderSelectorViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="File Path: " />
+            <TextBox Grid.Column="1"
+                     Background="{StaticResource BackgroundBrush}"
+                     BorderBrush="{StaticResource BorderBrush}"
+                     Foreground="{StaticResource ResourceKey=ForegroundBrush}"
+                     Text="{Binding SelectedItem.FullPath, ElementName=treeFolder, Mode=OneWay}"
+                     IsReadOnly="True"
+                     Focusable="False" />
+            <TreeView Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      x:Name="treeFolder"
+                      SelectedItemChanged="TreeFolder_SelectedItemChanged"
+                      Margin="8"
+                      ItemsSource="{Binding Drives}">
+                <TreeView.Resources>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded"
+                                Value="{Binding Expanded, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.Resources>
+                <TreeView.Background>
+                    <StaticResource ResourceKey="BackgroundBrush" />
+                </TreeView.Background>
+                <TreeView.BorderBrush>
+                    <StaticResource ResourceKey="BorderBrush" />
+                </TreeView.BorderBrush>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="FolderSelectorTreeDirectory"
+                                              ItemsSource="{Binding SubDirectories}">
+                        <TextBlock Foreground="{StaticResource ForegroundBrush}"
+                                   Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Grid>
+
+        <Button Content="Cancel"
+                Style="{StaticResource ResourceKey=WindowButton}"
+                Grid.Row="2"
+                Command="{Binding CancelButtonCommand}"
+                CommandParameter="{Binding ElementName=window}"
+                Grid.Column="2" />
+        <Button Content="Ok"
+                Style="{StaticResource WindowButton}"
+                Grid.Row="2"
+                Grid.Column="3"
+                Command="{Binding OKButtonCommand}"
+                CommandParameter="{Binding ElementName=window}" />
+
+    </Grid>
+</Window>

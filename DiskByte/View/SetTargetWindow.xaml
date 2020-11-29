@@ -1,0 +1,112 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiskByte.View"
+        xmlns:ViewModel="clr-namespace:DiskByte.ViewModel"
+        x:Class="DiskByte.View.SetTargetWindow"
+        mc:Ignorable="d"
+        Background="{StaticResource WindowBackgroundBrush}"
+        Foreground="{StaticResource ForegroundBrush}"
+        Title="SetTargetWindowxaml"
+        WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Width="300"
+        Name="window"
+        Height="250"
+        WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <ViewModel:SetTargetViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+
+        <RadioButton Grid.Column="1"
+                     Grid.Row="1"
+                     Content="All logical drives"
+                     Foreground="{StaticResource ForegroundBrush}"
+                     IsChecked="True"
+                     Checked="AllLogical_Radio_Checked" />
+        <RadioButton Grid.Column="1"
+                     x:Name="radSelectedDrive"
+                     Grid.Row="2"
+                     Content="Select logical drives"
+                     Foreground="{StaticResource ForegroundBrush}"
+                     Checked="SelectedLogical_Radio_Checked" />
+        <ListView Grid.Column="1"
+                  Grid.Row="3"
+                  x:Name="lstDrives"
+                  IsEnabled="{Binding IsChecked, ElementName=radSelectedDrive}"
+                  Style="{StaticResource ListViewStyle}"
+                  ItemsSource="{Binding LogicalDrivesOptions}"
+                  SelectionMode="Multiple"
+                  SelectionChanged="LstDrives_SelectionChanged"
+                  Grid.ColumnSpan="3"
+                  Background="{StaticResource BackgroundBrush}"
+                  Foreground="{StaticResource ForegroundBrush}" />
+        <RadioButton Grid.Column="1"
+                     x:Name="radSelectedFolder"
+                     Grid.Row="4"
+                     Content="Select Folder"
+                     Checked="SelectedFolders_Radio_Checked"
+                     Foreground="{StaticResource ForegroundBrush}" />
+        <Grid Grid.Column="1"
+              Grid.Row="5"
+              IsEnabled="{Binding IsChecked, ElementName=radSelectedFolder}"
+              Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Button Content="+"
+                        Width="25"
+                        Height="25"
+                        FontSize="16"
+                        Click="AddFolder_Click"
+                        Style="{StaticResource WindowButton}" />
+                <Button Content="X"
+                        Height="25"
+                        Click="RemoveFolder_Click"
+                        Style="{StaticResource WindowButton}" />
+            </StackPanel>
+
+            <ListView Style="{DynamicResource ListViewStyle}"
+                      Grid.Column="1"
+                      x:Name="lstFolder"
+                      ItemsSource="{Binding SelectedFolders}"
+                      SelectionMode="Multiple"
+                      Background="{StaticResource BackgroundBrush}"
+                      Foreground="{StaticResource ForegroundBrush}" />
+        </Grid>
+        <Button Grid.Row="6"
+                Grid.Column="2"
+                Style="{StaticResource WindowButton}"
+                Content="Cancel" 
+                Command="{Binding CancelButtonCommand}"
+                CommandParameter="{Binding ElementName=window}"
+                />
+        <Button Grid.Row="6"
+                Grid.Column="3"
+                Style="{StaticResource WindowButton}"
+                Content="Ok" 
+                Command="{Binding OKButtonCommand}"
+                CommandParameter="{Binding ElementName=window}"
+                />
+    </Grid>
+</Window>

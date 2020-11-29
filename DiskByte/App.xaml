@@ -1,0 +1,20 @@
+﻿<Application x:Class="DiskByte.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DiskByte"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Themes -->
+                <ResourceDictionary Source="Resources/Dictionaries/BaseAppResources.xaml" />
+                <!-- Styles -->
+                <ResourceDictionary Source="Resources/Dictionaries/Styles/WindowButtonStyle.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Styles/AnalyserTreeViewItemStyle.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Styles/AnalyserTreeViewPanelStyle.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Styles/ListViewStyle.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Styles/MenuItemStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

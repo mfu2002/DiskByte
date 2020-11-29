@@ -1,0 +1,95 @@
+﻿<Window x:Class="DiskByte.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiskByte"
+        xmlns:viewmodel="clr-namespace:DiskByte.ViewModel"
+        xmlns:view="clr-namespace:DiskByte.View"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Foreground="{DynamicResource ForegroundBrush}"
+        WindowStyle="None"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Title="MainWindow"
+        Height="450"
+        x:Name="Window"
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <viewmodel:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Disk Byte" Grid.Column="1" Padding="2" />
+        <Button
+                Style="{StaticResource WindowButton}"
+                Grid.Column="2"
+                Content="—"
+                Click="Minimise_Click" />
+        <Button 
+                Style="{StaticResource WindowButton}"
+                Grid.Column="3"
+                Content="🗖"
+                Click="Maximise_Click" />
+        <Button
+                Style="{StaticResource WindowButton}"
+                Grid.Column="4"
+                Content="X"
+                Click="Close_Click" />
+
+        <Menu Grid.Column="1" Grid.Row="1" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource ForegroundBrush}" Padding="1">
+            <MenuItem Style="{DynamicResource MenuItemStyle}"
+                      Header="File">
+                <MenuItem Header="Open"
+                          Command="{Binding MenuOpenButtonClicked}"
+                          CommandParameter="{Binding ElementName=Window}"
+                          Icon="📁"/>
+                <MenuItem Header="Refresh"
+                          Command="{Binding DataRefeshButton}"
+                          Icon="↺"/>
+                <Separator />
+                <MenuItem Header="Exit"                          
+                          Click="Close_Click" />
+            </MenuItem>
+        </Menu>
+        
+        
+        <Grid Grid.Column="1"
+              Grid.Row="2"
+              Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="{Binding ExtensionColumnWidth, Mode=TwoWay}" />
+            </Grid.ColumnDefinitions>
+            <view:AnalyseView x:Name="childAnalyseView"
+                              DockPanel.Dock="Top" />
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" Width="5" Background="{StaticResource WindowBackgroundBrush}" ResizeBehavior="PreviousAndNext" />
+            <view:ExtensionGridView Grid.Column="2" />
+        </Grid>
+
+        <Border Grid.Row="3"
+                Grid.ColumnSpan="6"
+                Background="{StaticResource AccentBrush}"
+                Padding="12 0 0 0">
+            <TextBlock Text="{Binding NotificationSystem.NotificationString}" />
+        </Border>
+
+    </Grid>
+</Window>
